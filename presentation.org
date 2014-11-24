@@ -3,6 +3,7 @@
 #+Email: 
 #+REVEAL_MARGIN: 0.0001
 #+REVEAL_EXTRA_CSS: /home/lefteris/ew/devcon1_presentation/style.css
+#+REVEAL_HLEVEL: 2
 #+OPTIONS: toc:nil
 #+OPTIONS: reveal_control:nil
 #+OPTIONS: reveal_progress:nil
@@ -15,17 +16,31 @@
 
 
 
-* Chapter 1
+* Goal of this presentation
 :PROPERTIES:
 :reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
 :END:
-- Bla bla
-- More bla bla
-* Chapter 2
+- Familiarize people with how to use Emacs in order to develop for CPP-Ethereum.
+- Show ways to develop solidity contracts in Emacs.
+* Why Emacs?
 :PROPERTIES:
 :reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
 :END:
-* Chapter 3
+** Advantages
+- Our target is developers. Emacs, along with VIM is one of the most popular editors, as such we can enable developers use Emacs to develop for Ethereum using Emacs as an example.
+- It's extensible and fully customizable and as such suits our needs.
+** Disadvantages
+- Vanilla EMACS sucks. 
+- Can be a resource hog. For some people EMACS means:
+  - Eight Megabytes And Constantly Swapping
+  - Emacs Makes A Computer Slow
+* Setting up a development environment
 :PROPERTIES:
 :reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
 :END:
+There are too many ways to setup a development environment in EMACS. I will showcase my own.
+
+- Obtain el-get
+- Specify the required packages
+- Setup the packages
+- Develop !
