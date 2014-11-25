@@ -320,5 +320,6 @@ Use EMACS solidity mode!
 - Any questions?
 - Any other cool tips by EMACS users?
 #+REVEAL_HTML: <div class="closing_paragraph">
-Follow @LefterisJP for more updates.
+- Get the slides from: https://github.com/LefterisJP/ethdevcon0_emacs.git
+- Follow @LefterisJP for more updates.
 #+REVEAL_HTML: </div>

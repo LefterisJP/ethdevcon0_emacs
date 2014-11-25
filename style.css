@@ -216,6 +216,10 @@ margin-top: 1.8em;
     margin-top: 1.4em;
 }
 
+.closing_paragraph ul{
+    margin-top: 2.4em;
+}
+
 .reveal.reveal.reveal a {
     color: #990000;
 }
