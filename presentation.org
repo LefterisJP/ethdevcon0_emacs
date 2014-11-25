@@ -3,7 +3,7 @@
 #+Email: 
 #+REVEAL_MARGIN: 0.0001
 #+REVEAL_EXTRA_CSS: /home/lefteris/ew/devcon1_presentation/style.css
-#+REVEAL_HLEVEL: 2
+#+REVEAL_HLEVEL: 1
 #+OPTIONS: toc:nil
 #+OPTIONS: reveal_control:nil
 #+OPTIONS: reveal_progress:nil
@@ -26,15 +26,15 @@
 :PROPERTIES:
 :reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
 :END:
-** Advantages
-- Our target is developers. Emacs, along with VIM is one of the most popular editors, as such we can enable developers use Emacs to develop for Ethereum using Emacs as an example.
-- It's extensible and fully customizable and as such suits our needs.
-** Disadvantages
-- Vanilla EMACS sucks. 
-- Can be a resource hog. For some people EMACS means:
-  - Eight Megabytes And Constantly Swapping
-  - Emacs Makes A Computer Slow
-* Setting up a development environment
+- Advantages
+    - Our target is developers. Emacs, along with VIM is one of the most popular editors, as such we can enable developers use Emacs to develop for Ethereum using Emacs as an example.
+    - It's extensible and fully customizable and as such suits our needs.
+- Disadvantages
+    - Vanilla EMACS sucks. 
+    - Can be a resource hog. For some people EMACS means:
+      - Eight Megabytes And Constantly Swapping
+      - Emacs Makes A Computer Slow
+* Setup the environment
 :PROPERTIES:
 :reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
 :END:
@@ -44,3 +44,238 @@ There are too many ways to setup a development environment in EMACS. I will show
 - Specify the required packages
 - Setup the packages
 - Develop !
+* el-get
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+Installs, updates and initializes Emacs packages for you.
+#+BEGIN_SRC emacs-lisp
+(add-to-list 'load-path "~/.emacs.d/el-get/el-get")
+
+(unless (require 'el-get nil 'noerror)
+  (with-current-buffer
+      (url-retrieve-synchronously
+       "https://raw.githubusercontent.com/dimitri/el-get/master/el-get-install.el")
+    (goto-char (point-max))
+    (eval-print-last-sexp)))
+
+(add-to-list 'el-get-recipe-path "~/.emacs.d/el-get-user/recipes")
+(el-get 'sync)
+#+END_SRC
+** Obtaining new packages
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+- Downloading a new package
+ #+BEGIN_SRC emacs-lisp
+ M-x el-get-install RET name-of-package
+ #+END_SRC
+
+- Updating an already installed package
+ #+BEGIN_SRC emacs-lisp
+ M-x el-get-update RET name-of-package
+ #+END_SRC
+
+- Deleting an installed package
+ #+BEGIN_SRC emacs-lisp
+ M-x el-get-remove RET name-of-package
+ #+END_SRC
+
+- Update all installed packages
+ #+BEGIN_SRC emacs-lisp
+ M-x el-get-update-all
+ #+END_SRC
+** Specifying your packages
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+#+BEGIN_SRC emacs-lisp
+;; Always keep a list of all the packages you use 
+(defvar my-packages
+'(s
+  ag
+  fill-column-indicator
+  expand-region))
+
+;; And el-get will make sure they are always up to date
+(el-get 'sync my-packages)
+#+END_SRC
+* Packages for C++ development
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+- Must have
+    - malinka
+    - rtags
+    - auto-complete
+    - flycheck
+    - projectile
+
+- Optional
+    - magit
+    - helm
+* Malinka
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+A meta-package allowing users to configure C++ projects and feed their data to other packages.
+#+BEGIN_SRC emacs-lisp
+(malinka-define-project
+ :name "ethereum"
+ :same-name-check nil
+ :build-cmd "make clean && make -j5 VERBOSE=1"
+ :build-root-directory "/home/lefteris/ew/cpp-ethereum/build"
+ :root-directory "/home/lefteris/ew/cpp-ethereum"
+ :compile-cmd "make -C .. -j4"
+ :test-cmd "./build/test/testeth")
+#+END_SRC
+
+Source: https://github.com/LefterisJP/malinka
+* Rtags
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+Client server application that indexes C/C++ code and keeps a peristent in-memory Database of all references. Uses Clang.
+Provides:
+- Jumping between tags and definitions/implementations especially in C++.
+- Reference finding
+- Auto completion (feeding data to the auto complete package)
+- Clang fix-it hints
+
+Source: https://github.com/Andersbakken/rtags
+** Reference finding
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+#+ATTR_HTML: :align left :width 60% :height 60%
+[[/home/lefteris/ew/devcon1_presentation/rtags_ref_find1.png]]
+#+ATTR_HTML: :align right :width 80% :height 80%
+[[/home/lefteris/ew/devcon1_presentation/rtags_ref_find2.png]]
+** Auto completion
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+Simple example for BOOST's asio basic resolver.
+#+ATTR_HTML: :align left :width 50% :height 60%
+[[/home/lefteris/ew/devcon1_presentation/autocomplete1.png]]
+#+ATTR_HTML: :align right :width 50% :height 80%
+[[/home/lefteris/ew/devcon1_presentation/autocomplete2.png]]
+** Fixits
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+[[/home/lefteris/ew/devcon1_presentation/fixit1.png]]
+** Fixits
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+[[/home/lefteris/ew/devcon1_presentation/fixit2.png]]
+* Flycheck
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+A way to interface to various syntax checkers. For C++ clang syntax checker is recommended.
+* Projectile
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+A project management package. Uses version control to easily index all project files.
+#+ATTR_HTML: :align right
+[[/home/lefteris/ew/devcon1_presentation/projectile1.png]]
+- Switch between headers/sources
+- Compiling a project
+- Testing a project
+- Grepping in a project
+- Much more ...
+* Developing Contracts in EMACS
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+Use EMACS solidity mode!
+#+ATTR_HTML: :width 45% height: 45%
+[[/home/lefteris/ew/devcon1_presentation/soliditymode1.png]]
+* Solidity mode code
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+#+BEGIN_SRC solidity
+ contract Ballot {
+    // Create a new ballot with $(_numProposals) different proposals.
+    function Ballot(uint8 _numProposals) {
+        address sender = 0x123; // msg.sender
+        chairperson = sender;
+        numProposals = _numProposals;
+    }
+
+    // Give $(voter) the right to vote on this ballot.
+    // May only be called by $(chairperson).
+    function giveRightToVote(address voter) {
+        if (/*msg.sender != chairperson ||*/ voted[voter]) return;
+        voterWeight[voter] = 1;
+    }
+
+    // Delegate your vote to the voter $(to).
+    function delegate(address to) {
+        address sender = 0x123; // msg.sender
+        if (voted[sender]) return;
+        while (delegations[to] != address(0) && delegations[to] != sender)
+            to = delegations[to];
+        if (to == sender) return;
+        voted[sender] = true;
+        delegations[sender] = to;
+        if (voted[to]) voteCounts[votes[to]] += voterWeight[sender];
+        else voterWeight[to] += voterWeight[sender];
+    }
+
+    // Give a single vote to proposal $(proposal).
+    function vote(uint8 proposal) {
+        address sender = 0x123; // msg.sender
+        if (voted[sender] || proposal >= numProposals) return;
+        voted[sender] = true;
+        votes[sender] = proposal;
+        voteCounts[proposal] += voterWeight[sender];
+    }
+
+    function winningProposal() const returns (uint8 winningProposal) {
+        uint256 winningVoteCount = 0;
+        uint8 proposal = 0;
+        while (proposal < numProposals) {
+            if (voteCounts[proposal] > winningVoteCount) {
+                winningVoteCount = voteCounts[proposal];
+                winningProposal = proposal;
+            }
+            ++proposal;
+        }
+    }
+
+    address chairperson;
+    uint8 numProposals;
+    mapping(address => uint256) voterWeight;
+    mapping(address => bool) voted;
+    mapping(address => uint8) votes;
+    mapping(address => address) delegations;
+    mapping(uint8 => uint256) voteCounts;
+}
+#+END_SRC
+* Current features
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+Very minimal
+
+- Syntax highlighting
+- Identation
+* Future work
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+- Auto completion
+  - Achievable as soon as solc prints out the AST of a contract in json.
+- Integration with the debugger (?)
+- Integration with other tools
+* Thank you
+:PROPERTIES:
+:reveal_background: /home/lefteris/ew/devcon1_presentation/bg1.jpg
+:END:
+- Any questions?
+- Any other cool tips by EMACS users?
